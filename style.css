@@ -1,0 +1,14 @@
+span {
+    font-style: italic;
+}
+
+div {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h2 {font-stretch: condensed;}
+
+img {
+    display: block;
+  max-width: 100%;
+}
