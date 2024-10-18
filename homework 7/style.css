@@ -12,3 +12,9 @@ img {
     display: block;
   max-width: 100%;
 }
+
+body {
+    background-image: url("AdobeStock_181375448.jpeg");
+    background-color: #cccccc;
+   }
+   
