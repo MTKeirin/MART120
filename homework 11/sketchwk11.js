@@ -19,163 +19,150 @@ var shape2Y = 200;
 var shape2XSpeed;
 var shape2YSpeed;
 
-// Array to store grey circle thingy//
-var clickedPositions = [];
+//grey circle thingy//
+var mouseShapeX = 0;  // Initialize with default value
+var mouseShapeY = 0;  // Initialize with default value
 
 // Flag to check if the player has won//
 var gameWon = false;
 
-function setup()
-{
+function setup() {
     createCanvas(500, 600);
     shapeXSpeed = Math.floor(Math.random() * 5) + 1; //speed for shape 1//
     shapeYSpeed = Math.floor(Math.random() * 5) + 1;
     shape2XSpeed = Math.floor(Math.random() * 5) + 1;  // speed for shape 2//
     shape2YSpeed = Math.floor(Math.random() * 5) + 1;  
-    createCharacter(200, 350);
+    createCharacter(100, 350);
 }
 
-function draw()
-{
+function draw() {
     background(170,2,2);
     stroke(0);
     fill(0);
 
     // Call createBorders function//
-    createBorders(10);
+    createBorders(20);
 
     // Exit message//
     textSize(16);
     text("EXIT", 50, height - 50);  //placed bottom left//
 
-    // if statment that will print you won text if true//
-    if (gameWon) {
-        fill(0);
-        stroke(5);
-        textSize(30);
-        text("You Win!", width / 2 - 50, height / 2 - 50);
-        return; //this thing tells me if they game has been won//
-    }
-
+    //creates character functions//
     drawCharacter();
     characterMovement();
 
-    // shape 1 begin//
+    // shape 1 function//
     fill(24,10,44);
     circle(shapeX, shapeY, 10);
+
+    //get random speed for shape 1//
+    shapeXSpeed = Math.floor(Math.random() * (Math.floor(Math.random() * 5)) + 1);
+    shapeYSpeed = Math.floor(Math.random() * (Math.floor(Math.random() * 5)) + 1);
+
+    //move shape//
     shapeX += shapeXSpeed;
     shapeY += shapeYSpeed;
 
     // wrap around for shape 1//
-    if(shapeX > width)
-    {
+    if(shapeX > width) {
         shapeX = 0;
     }
-    if(shapeX < 0)
-    {
+    if(shapeX < 0) {
         shapeX = width;
     }
-    if(shapeY > height)
-    {
+    if(shapeY > height) {
         shapeY = 0;
     }
-    if(shapeY < 0)
-    {
+    if(shapeY < 0) {
         shapeY = height;
     }
 
     // shape 2 (beeeg)//
     fill(60,0,70);
     circle(shape2X, shape2Y, 100);
-    shape2X += shape2XSpeed;
-    shape2Y += shape2YSpeed;
 
     // Wrap around for shape 2//
-    if(shape2X > width)
-    {
+    if(shape2X > width) {
         shape2X = 0;
     }
-    if(shape2X < 0)
-    {
+    if(shape2X < 0) {
         shape2X = width;
     }
-    if(shape2Y > height)
-    {
+    if(shape2Y > height) {
         shape2Y = 0;
     }
-    if(shape2Y < 0)
-    {
+    if(shape2Y < 0) {
         shape2Y = height;
     }
 
-    // stops character from appearing on screen if it wins//
+    // Move shape 2//
+    shape2X += shape2XSpeed;
+    shape2Y += shape2YSpeed;
+
+    // If the game is won, display the win message and stop further updates//
+    if (gameWon) {
+        fill(0);
+        stroke(5);
+        textSize(30);
+        text("You Win!", width / 2 - 50, height / 2 - 50);
+        return;
+    }
+
+    // Stops character from appearing on screen if it wins//
     if (characterX < 50 && characterY > height - 50) {
         gameWon = true; // Set the flag to true when the player reaches the exit area//
     }
 
-    // Draws the grey circles//
+    // Create the grey circle based on mouse click
     fill(120,130,140);
-    for (var i = 0; i < clickedPositions.length; i++) {
-        circle(clickedPositions[i].x, clickedPositions[i].y, 25);
-    }
+    circle(mouseShapeX, mouseShapeY, 25);
 }
 
-function characterMovement()
-{
-    // stops charcacter movement after it wins//
+function characterMovement() {
+    // stops character movement after it wins//
     if (gameWon) return;
 
     // codes for  keys//
-    if(keyIsDown(w))
-    {
+    if(keyIsDown(w)) {
         characterY -= 10;   
     }
-    if(keyIsDown(s))
-    {
+    if(keyIsDown(s)) {
         characterY += 10;   
     }
-    if(keyIsDown(a))
-    {
+    if(keyIsDown(a)) {
         characterX -= 10;   
     }
-    if(keyIsDown(d))
-    {
+    if(keyIsDown(d)) {
         characterX += 10;   
     }
 
     // character wrap around//
-    if(characterX > width)
-    {
+    if(characterX > width) {
         characterX = 0;
     }
-    if(characterX < 0)
-    {
+    if(characterX < 0) {
         characterX = width;
     }
-    if(characterY > height)
-    {
+    if(characterY > height) {
         characterY = 0;
     }
-    if(characterY < 0)
-    {
+    if(characterY < 0) {
         characterY = height;
     }
 }
 
-function createCharacter(x, y)
-{
+function createCharacter(x, y) {
     characterX = x;
     characterY = y;
 }
+
 // main character energy//
-function drawCharacter()
-{
+function drawCharacter() {
     fill(23,40,123);  // dark blue//
     rect(characterX - 12.5, characterY - 12.5, 25, 25);  
 }
 
-function createBorders(thickness)
-{
+function createBorders(thickness) {
     // Top border (full width)//
     rect(0, 0, width, thickness);
 
@@ -188,12 +175,8 @@ function createBorders(thickness)
     rect(width - thickness, 0, thickness, height); 
 }
 
-
-
-
-
-function mouseClicked()
-{
-    // Store the mouse click positions to remember where the grey circles go//
-    clickedPositions.push({x: mouseX, y: mouseY});
+function mouseClicked() {
+    // When mouse is clicked, set position for grey circle
+    mouseShapeX = mouseX;
+    mouseShapeY = mouseY;
 }
